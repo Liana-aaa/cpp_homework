@@ -1,20 +1,20 @@
 BUILD_DIR = build
 SOURCE_DIR = src
-CFLAGS = -g -Wall -Wextra -Wpedantic
+TEST_DIR = tests
+CFLAGS = -g -Wall -Wextra -Wpedantic  -I$(SOURCE_DIR)
 
-all: main
+all: test
 
-main: $(BUILD_DIR)/primeFactorize.o  $(BUILD_DIR)/test.o
-		clang++ -o main $(CFLAGS) $(BUILD_DIR)/primeFactorize.o $(BUILD_DIR)/test.o -lgtest_main -lgtest -lpthread
+test: $(BUILD_DIR)/factors.o $(BUILD_DIR)/test.o
+	clang++ -o test $(CFLAGS) $(BUILD_DIR)/factors.o $(BUILD_DIR)/test.o -lgtest_main -lgtest -lpthread 
 
-$(BUILD_DIR)/test.o: $(SOURCE_DIR)/test.cpp $(SOURCE_DIR)/primeFactorize.cpp
-		clang++ -c $(CFLAGS)  $(SOURCE_DIR)/test.cpp -o $(BUILD_DIR)/test.o 
+$(BUILD_DIR)/test.o: $(TEST_DIR)/test.cpp $(SOURCE_DIR)/factors.cpp
+	clang++ -c $(CFLAGS) $(TEST_DIR)/test.cpp -o $(BUILD_DIR)/test.o 
 
-$(BUILD_DIR)/primeFactorize.o: $(SOURCE_DIR)/primeFactorize.cpp $(SOURCE_DIR)/functions.h
-		clang++ -c $(CFLAGS) $(SOURCE_DIR)/primeFactorize.cpp -o $(BUILD_DIR)/primeFactorize.o
-
+$(BUILD_DIR)/factors.o: $(SOURCE_DIR)/factors.cpp $(SOURCE_DIR)/factors.h
+	clang++ -c $(CFLAGS) $(SOURCE_DIR)/factors.cpp -o $(BUILD_DIR)/factors.o
 
 clean:
-		rm $(BUILD_DIR)/*.o
+	rm -f $(BUILD_DIR)/*.o
 
-.PHONY:all clean
+.PHONY: all clean
