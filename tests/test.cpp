@@ -1,63 +1,40 @@
-#include <vector>
+#include <stdio.h>
 #include <gtest/gtest.h>
-#include "factors.h"
+#include "functions.h"
 
-TEST(FactorTest, Given1_FactorsIsEmpty) {
-    std::vector<int> expet = {};
-    EXPECT_EQ(GetFactorsOf(1), expet);
+TEST(MaxTest, ArrOf1Element_SameElement) {
+    int arr[1] = {0};
+    EXPECT_EQ(max(arr, 1), 0);
 }
 
-TEST(FactorTest, Given2_FactorsIs2) {
-    std::vector<int> expet = {2};
-    EXPECT_EQ(GetFactorsOf(2), expet);
+TEST(MaxTest, ArrOf2Elements_returnsMax) {
+    int arr0[2] = {0, 1};
+    int arr1[2] = {1, 0};
+    EXPECT_EQ(max(arr0, 2), 1);
+    EXPECT_EQ(max(arr1, 2), 1);
 }
 
-TEST(FactorTest, Given3_FactorsIs3) {
-    std::vector<int> expet = {3};
-    EXPECT_EQ(GetFactorsOf(3), expet);
+TEST(MaxTest, ArrOf3Elements_returnsMax) {
+    int arr0[3] = {0, 1, 2};
+    int arr1[3] = {2, 1, 0};
+    int arr2[3] = {1, 2, 0};
+    EXPECT_EQ(max(arr0, 3), 2);
+    EXPECT_EQ(max(arr1, 3), 2);
+    EXPECT_EQ(max(arr2, 3), 2);
 }
 
-TEST(FactorTest, Given4_FactorsAre2and2) {
-    std::vector<int> expet = {2, 2};
-    EXPECT_EQ(GetFactorsOf(4), expet);
+TEST(MaxTest, ArrOf4Elements_returnsMax) {
+    int arr0[4] = {0, 1, 2, 3};
+    int arr1[4] = {3, 2, 1, 0};
+    int arr2[4] = {1, 3, 2, 0};
+    int arr3[4] = {2, 0, 3, 1};
+    EXPECT_EQ(max(arr0, 4), 3);
+    EXPECT_EQ(max(arr1, 4), 3);
+    EXPECT_EQ(max(arr2, 4), 3);
+    EXPECT_EQ(max(arr3, 4), 3);
 }
 
-TEST(FactorTest, Given5_FactorsIs5) {
-    std::vector<int> expet = {5};
-    EXPECT_EQ(GetFactorsOf(5), expet);
-}
-
-TEST(FactorTest, Given6_FactorsAre2and3) {
-    std::vector<int> expet = {2, 3};
-    EXPECT_EQ(GetFactorsOf(6), expet);
-}
-
-TEST(FactorTest, Given7_FactorsIs7) {
-    std::vector<int> expet = {7};
-    EXPECT_EQ(GetFactorsOf(7), expet);
-}
-
-TEST(FactorTest, Given8_FactorsAre2and2and2) {
-    std::vector<int> expet = {2, 2, 2};
-    EXPECT_EQ(GetFactorsOf(8), expet);
-}
-
-TEST(FactorTest, Given9_FactorsAre3and3) {
-    std::vector<int> expet = {3, 3};
-    EXPECT_EQ(GetFactorsOf(9), expet);
-}
-
-TEST(FactorTest, Given10_FactorsAre2and5) {
-    std::vector<int> expet = {2, 5};
-    EXPECT_EQ(GetFactorsOf(10), expet);
-}
-
-TEST(FactorTest, GivenLarge_FactorsIsLarge) {
-    std::vector<int> expet = {2, 2, 5, 7, 11, 13, 17};
-    EXPECT_EQ(GetFactorsOf(2 * 2 * 5 * 7 * 17 * 11 * 13), expet);
-}
-
-TEST(FactorTest, GivenLargePrime_FactorsIsLargePrime) {
-    std::vector<int> expet = {1000000007};
-    EXPECT_EQ(GetFactorsOf(1000000007), expet);
+TEST(MaxTest, ArrFromManyElements_returnsMax) {
+    int arr[10] = {42, -17, 83, 0, 19, -56, 71, 5, -8, 64};
+    EXPECT_EQ(max(arr, 10), 83);
 }

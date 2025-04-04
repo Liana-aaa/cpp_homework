@@ -1,20 +1,42 @@
-BUILD_DIR = build
-SOURCE_DIR = src
+CXX = clang++
+CXXFLAGS = -g -Wall -Wextra -Wpedantic -I$(SRC_DIR)
+
+SRC_DIR = src
 TEST_DIR = tests
-CFLAGS = -g -Wall -Wextra -Wpedantic  -I$(SOURCE_DIR)
+BUILD_DIR = build
+OBJ_DIR = $(BUILD_DIR)/obj
 
-all: test
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+TEST_FILES = $(wildcard $(TEST_DIR)/*.cpp)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/src_%.o,$(SRC_FILES))
+TEST_OBJ_FILES = $(patsubst $(TEST_DIR)/%.cpp,$(OBJ_DIR)/test_%.o,$(TEST_FILES))
 
-test: $(BUILD_DIR)/factors.o $(BUILD_DIR)/test.o
-	clang++ -o test $(CFLAGS) $(BUILD_DIR)/factors.o $(BUILD_DIR)/test.o -lgtest_main -lgtest -lpthread 
+$(info SRC_FILES = $(SRC_FILES))
+$(info TEST_FILES = $(TEST_FILES))
 
-$(BUILD_DIR)/test.o: $(TEST_DIR)/test.cpp $(SOURCE_DIR)/factors.cpp
-	clang++ -c $(CFLAGS) $(TEST_DIR)/test.cpp -o $(BUILD_DIR)/test.o 
+TEST_EXEC = $(BUILD_DIR)/runTests
 
-$(BUILD_DIR)/factors.o: $(SOURCE_DIR)/factors.cpp $(SOURCE_DIR)/factors.h
-	clang++ -c $(CFLAGS) $(SOURCE_DIR)/factors.cpp -o $(BUILD_DIR)/factors.o
+INCLUDES = -I$(SRC_DIR)
+LIBS = -lgtest -lgtest_main -lpthread
+
+all: $(TEST_EXEC)
+
+$(OBJ_DIR) $(BUILD_DIR):
+	mkdir -p $@
+
+$(OBJ_DIR)/src_%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(TEST_EXEC): $(OBJ_FILES) $(TEST_OBJ_FILES) | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LIBS)
+
+test: $(TEST_EXEC)
+	./$(TEST_EXEC)
 
 clean:
-	rm -f $(BUILD_DIR)/*.o
+	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean
+.PHONY: all clean test
