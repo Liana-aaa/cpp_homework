@@ -46,3 +46,7 @@ TEST(PowerTest, PowerOfAnyNumberIsAnyNumber) {
     EXPECT_EQ(power(56, 7), 1727094849536);
     EXPECT_EQ(power(15, 12), 129746337890625);
 }
+
+TEST(PowerTest, PowerOfZeroIsZero) {
+    EXPECT_EQ(power(0, 0), 1);
+}

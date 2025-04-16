@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 double power(int x, int n) {
-    if (x == 0) 
+    if (x == 0 && n != 0) 
         return 0;
-
+    
     double result = 1;
     double x1 = x;
 
